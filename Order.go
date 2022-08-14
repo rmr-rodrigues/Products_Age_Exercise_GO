@@ -27,3 +27,17 @@ func (order Order) GetProductsAges() []int {
 	}
 	return ages
 }
+
+func (order Order) GetMapAges() map[int]int {
+	resultMap := make(map[int]int)
+
+	for _, productAge := range order.GetProductsAges() {
+
+		if value, found := resultMap[productAge]; found {
+			resultMap[productAge] = value + 1
+		} else if !found {
+			resultMap[productAge] = 1
+		}
+	}
+	return resultMap
+}

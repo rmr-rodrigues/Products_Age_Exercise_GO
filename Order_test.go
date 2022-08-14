@@ -25,3 +25,22 @@ func TestGetProductsAges(t *testing.T) {
 		}
 	})
 }
+
+func TestGetMapAges(t *testing.T) {
+	t.Run("for a slice of ages return a map with the age as a key and the quantity of ages as the value", func(t *testing.T) {
+		want := map[int]int{11: 1, 10: 1, 9: 1}
+		got := order1.GetMapAges()
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for an empty slice of ages return an empty map", func(t *testing.T) {
+		want := make(map[int]int)
+		got := order6.GetMapAges()
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+}
