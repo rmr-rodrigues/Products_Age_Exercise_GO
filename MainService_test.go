@@ -61,3 +61,33 @@ func TestDatesDifferenceInMonths(t *testing.T) {
 		}
 	})
 }
+
+func TestIntervalToSlice(t *testing.T) {
+	t.Run("for a valid interval returns a slice with all the values in that interval", func(t *testing.T) {
+
+		want := []int{1, 2, 3, 4, 5}
+		got := IntervalToSlice(1, 5)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for an interval with start and end values equals returns an empty slice", func(t *testing.T) {
+
+		var want []int
+		got := IntervalToSlice(1, 1)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for an interval with a start value bigger than the end value returns an empty slice", func(t *testing.T) {
+
+		var want []int
+		got := IntervalToSlice(4, 1)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+}

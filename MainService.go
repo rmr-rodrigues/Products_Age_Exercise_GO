@@ -1,6 +1,8 @@
 package Products_Age
 
-import "time"
+import (
+	"time"
+)
 
 func FilterOrders(orders []Order, startDate time.Time, endDate time.Time) []Order {
 
@@ -22,4 +24,18 @@ func DatesDifferenceInMonths(startDate time.Time, endDate time.Time) int {
 	} else {
 		return int(datesDifference.Hours() / 24 / 30)
 	}
+}
+
+func IntervalToSlice(start int, end int) []int {
+	//list := make([]int, 0)
+	var l []int
+
+	if end > start && start > 0 {
+		for i := start; i <= end; i++ {
+			l = append(l, i)
+		}
+	}
+
+	return l
+
 }

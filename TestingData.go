@@ -19,6 +19,7 @@ var product3 = Product{"Product3", "Category1", 2.5, 5.0, date20180301}
 var product4 = Product{"Product4", "Category1", 2.5, 5.0, date20181201}
 var product5 = Product{"Product1", "Category1", 2.5, 5.0, date20180501}
 var product6 = Product{"Product1", "Category1", 2.5, 5.0, date20181215}
+var product7 = Product{"Product1", "Category1", 2.5, 5.0, date20180101}
 
 var itemDate20180102 = Item{10.0, 5.0, 1.0, product1}
 var itemDate20180201 = Item{10.0, 5.0, 1.0, product2}
@@ -26,6 +27,7 @@ var itemDate20180301 = Item{10.0, 5.0, 1.0, product3}
 var itemDate20181231 = Item{10.0, 5.0, 1.0, product4}
 var itemDate20180501 = Item{10.0, 5.0, 1.0, product5}
 var itemDate20181215 = Item{10.0, 5.0, 1.0, product6}
+var itemDate20180101 = Item{10.0, 5.0, 1.0, product7}
 
 var order1 = Order{"Client 1", "++351 999999999", "Address 1", 1.0, date20181201,
 	[]Item{itemDate20180102, itemDate20180201, itemDate20180301}}
@@ -39,3 +41,5 @@ var order5 = Order{"Client 2", "++351 999999998", "Address 2", 2.0, date20190101
 	[]Item{itemDate20181231, itemDate20180501, itemDate20181231}}
 var order6 = Order{"Client 2", "++351 999999998", "Address 2", 2.0, date20190101,
 	[]Item{itemDate20181215}}
+var order7 = Order{"Client 2", "++351 999999998", "Address 2", 2.0, date20190101,
+	[]Item{itemDate20180101, itemDate20180501, itemDate20180102}}
