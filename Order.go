@@ -12,3 +12,7 @@ type Order struct {
 	placedAt        time.Time
 	items           []Item
 }
+
+func (order Order) GetPlacedAt() time.Time {
+	return order.placedAt
+}
