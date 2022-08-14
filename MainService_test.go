@@ -91,3 +91,39 @@ func TestIntervalToSlice(t *testing.T) {
 		}
 	})
 }
+
+func TestSumAgesByInterval(t *testing.T) {
+	t.Run("for a valid interval and a map with values it returns the sum of all values", func(t *testing.T) {
+
+		m := map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
+		i := []int{1, 2, 3, 4, 5}
+		want := 15
+		got := SumAgesByInterval(i, m)
+
+		if got != want {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for a valid interval and a map without values it returns 0", func(t *testing.T) {
+
+		m := map[int]int{}
+		i := []int{1, 2, 3, 4, 5}
+		want := 0
+		got := SumAgesByInterval(i, m)
+
+		if got != want {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for a valid interval and a map with values out of the interval it returns 0", func(t *testing.T) {
+
+		m := map[int]int{3: 3, 4: 4, 5: 5}
+		i := []int{1, 2}
+		want := 0
+		got := SumAgesByInterval(i, m)
+
+		if got != want {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+}

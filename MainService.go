@@ -35,7 +35,16 @@ func IntervalToSlice(start int, end int) []int {
 			l = append(l, i)
 		}
 	}
-
 	return l
+}
 
+func SumAgesByInterval(interval []int, agesMap map[int]int) int {
+	sum := 0
+
+	for _, value := range interval {
+		if v, found := agesMap[value]; found {
+			sum = sum + v
+		}
+	}
+	return sum
 }
