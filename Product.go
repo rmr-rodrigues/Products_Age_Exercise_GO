@@ -11,3 +11,7 @@ type Product struct {
 	price        float64
 	creationDate time.Time
 }
+
+func (product Product) GetCreationDate() time.Time {
+	return product.creationDate
+}
