@@ -17,7 +17,7 @@ func (order Order) GetPlacedAt() time.Time {
 	return order.placedAt
 }
 
-func GetProductsAges(order Order) []int {
+func (order Order) GetProductsAges() []int {
 	var ages = make([]int, 0)
 	for _, item := range order.items {
 		months := DatesDifferenceInMonths(item.Product.creationDate, order.placedAt)
