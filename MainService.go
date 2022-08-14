@@ -1,6 +1,9 @@
 package Products_Age
 
 import (
+	"regexp"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -81,4 +84,48 @@ func getKeysFromMap(m map[int]int) []int {
 		keys = append(keys, k)
 	}
 	return keys
+}
+
+func parseStringToIntervals(s string) []Interval {
+
+	validateIntervalRegex, _ := regexp.Compile("^\\d+-\\d+")
+	validateGreaterThanIntervalRegex, _ := regexp.Compile(">\\d+") //regexp.Compile("^>\\d+$")
+
+	var result []Interval
+
+	if len(s) >= 4 {
+		// string examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
+		s1 := strings.TrimSpace(s)
+		s2 := strings.TrimLeft(s1, "(")
+		s3 := strings.TrimRight(s2, ")")
+		s4 := strings.Split(s3, ",")
+
+		for _, value := range s4 {
+			s5 := strings.TrimSpace(value)
+
+			if validateIntervalRegex.MatchString(s5) {
+				result = append(result, stringToNormalInterval(s5))
+			} else if validateGreaterThanIntervalRegex.MatchString(s) { // TODO verify the regex
+				result = append(result, stringToGreaterThanInterval(s5))
+			}
+
+		}
+	}
+	return result
+}
+
+func stringToNormalInterval(s string) Interval {
+	s1 := strings.Split(s, "-")
+
+	start, _ := strconv.Atoi(s1[0])
+	end, _ := strconv.Atoi(s1[1])
+	return Interval{start, end}
+}
+
+func stringToGreaterThanInterval(s string) Interval {
+	s1 := strings.TrimLeft(s, ">")
+
+	start, _ := strconv.Atoi(s1)
+	end := -1
+	return Interval{start, end}
 }

@@ -163,3 +163,39 @@ func TestSumIntervalsValues(t *testing.T) {
 		}
 	})
 }
+
+func TestParseStringToIntervals(t *testing.T) {
+	t.Run("for a correct string has to return a slice with all the intervals", func(t *testing.T) {
+
+		// strings examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
+		intervals := "(1-3, 4-6, 7-12, >12)"
+		want := []Interval{{1, 3}, {4, 6}, {7, 12}, {12, -1}}
+		got := parseStringToIntervals(intervals)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("parse just a string with one normal interval", func(t *testing.T) {
+
+		// strings examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
+		intervals := "(1-3)"
+		want := []Interval{{1, 3}}
+		got := parseStringToIntervals(intervals)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("parse just a string with one greater than interval", func(t *testing.T) {
+
+		// strings examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
+		intervals := "(>3)"
+		want := []Interval{{3, -1}}
+		got := parseStringToIntervals(intervals)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+}
