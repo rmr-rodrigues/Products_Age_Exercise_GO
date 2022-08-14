@@ -4,5 +4,5 @@ type Item struct {
 	cost        float64
 	shippingFee float64
 	taxAmount   float64
-	product     Product
+	Product     Product
 }
