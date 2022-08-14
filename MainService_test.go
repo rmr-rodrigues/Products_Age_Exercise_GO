@@ -127,3 +127,39 @@ func TestSumAgesByInterval(t *testing.T) {
 		}
 	})
 }
+
+func TestSumIntervalsValues(t *testing.T) {
+	t.Run("for a slice of valid intervals and a map with values, it returns a map with the sum of values for each interval and the intervals as keys", func(t *testing.T) {
+
+		m := map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6}
+		intervals := []Interval{{1, 3}, {4, 6}}
+		want := map[Interval]int{Interval{1, 3}: 6, Interval{4, 6}: 15}
+		got := SumIntervalsValues(intervals, m)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for an interval greater than, returns a map with the interval as key", func(t *testing.T) {
+
+		m := map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6}
+		intervals := []Interval{{1, -1}}
+		want := map[Interval]int{Interval{1, -1}: 20}
+		got := SumIntervalsValues(intervals, m)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("for an interval without values it returns an empty map", func(t *testing.T) {
+
+		m := map[int]int{1: 1, 2: 2, 3: 3}
+		intervals := []Interval{{4, 6}}
+		want := map[Interval]int{}
+		got := SumIntervalsValues(intervals, m)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+}

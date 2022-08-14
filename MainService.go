@@ -48,3 +48,37 @@ func SumAgesByInterval(interval []int, agesMap map[int]int) int {
 	}
 	return sum
 }
+
+func SumIntervalsValues(intervals []Interval, m map[int]int) map[Interval]int {
+	keys := getKeysFromMap(m)
+	var finalMap = map[Interval]int{}
+	for _, interval := range intervals {
+		// if it's an interval greater than
+		if interval.start > interval.end && interval.end == -1 {
+			intervalAges := 0
+			for _, k := range keys {
+				if k >= interval.start+1 {
+					intervalAges = intervalAges + m[k]
+				}
+			}
+			if intervalAges > 0 {
+				finalMap[interval] = intervalAges
+			}
+		} else { // if it's a normal interval
+			i := IntervalToSlice(interval.start, interval.end)
+			intervalAges := SumAgesByInterval(i, m)
+			if intervalAges > 0 {
+				finalMap[interval] = intervalAges
+			}
+		}
+	}
+	return finalMap
+}
+
+func getKeysFromMap(m map[int]int) []int {
+	keys := make([]int, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}
