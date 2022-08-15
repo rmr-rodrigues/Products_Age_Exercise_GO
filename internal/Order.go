@@ -1,26 +1,26 @@
-package Products_Age
+package internal
 
 import (
 	"time"
 )
 
 type Order struct {
-	customerName    string
-	customerPhone   string
-	shippingAddress string
-	grandTotal      float64
-	placedAt        time.Time
-	items           []Item
+	CustomerName    string
+	CustomerPhone   string
+	ShippingAddress string
+	GrandTotal      float64
+	PlacedAt        time.Time
+	Items           []Item
 }
 
 func (order Order) GetPlacedAt() time.Time {
-	return order.placedAt
+	return order.PlacedAt
 }
 
 func (order Order) GetProductsAges() []int {
 	var ages = make([]int, 0)
-	for _, item := range order.items {
-		months := DatesDifferenceInMonths(item.Product.creationDate, order.placedAt)
+	for _, item := range order.Items {
+		months := DatesDifferenceInMonths(item.Product.CreationDate, order.PlacedAt)
 		if months > 0 {
 			ages = append(ages, months)
 		}

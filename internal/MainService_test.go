@@ -1,4 +1,4 @@
-package Products_Age
+package internal
 
 import (
 	"reflect"
@@ -6,16 +6,15 @@ import (
 	"time"
 )
 
-var t1, _ = time.Parse(datePattern, "2018-01-01 00:00:00")
-var t2, _ = time.Parse(datePattern, "2019-01-01 00:00:00")
+var t1, _ = time.Parse(DatePattern, "2018-01-01 00:00:00")
+var t2, _ = time.Parse(DatePattern, "2019-01-01 00:00:00")
 
-// TODO review this line TestFilterOrders calls FilterOrders with a list of valid orders and valid dates
 func TestFilterOrders(t *testing.T) {
 
 	t.Run("filters 3 orders out of 5", func(t *testing.T) {
-		ordersList := []Order{order1, order2, order3, order4, order5}
+		ordersList := []Order{Order1, Order2, Order3, Order4, Order5}
 
-		want := []Order{order1, order3, order4}
+		want := []Order{Order1, Order3, Order4}
 
 		got := FilterOrders(ordersList, t1, t2)
 
@@ -23,10 +22,10 @@ func TestFilterOrders(t *testing.T) {
 			t.Errorf("got %v want %v", got, want)
 		}
 	})
-	t.Run("returns an empty slice it there are no orders in the interval", func(t *testing.T) {
-		ordersList := []Order{order5}
+	t.Run("returns an empty slice if there are no orders in the interval", func(t *testing.T) {
+		ordersList := []Order{Order5}
 
-		var want []Order
+		var want = make([]Order, 0)
 		got := FilterOrders(ordersList, t1, t2)
 
 		if !reflect.DeepEqual(got, want) {
@@ -133,7 +132,7 @@ func TestSumIntervalsValues(t *testing.T) {
 
 		m := map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6}
 		intervals := []Interval{{1, 3}, {4, 6}}
-		want := map[Interval]int{Interval{1, 3}: 6, Interval{4, 6}: 15}
+		want := map[Interval]int{Interval{Start: 1, End: 3}: 6, Interval{Start: 4, End: 6}: 15}
 		got := SumIntervalsValues(intervals, m)
 
 		if !reflect.DeepEqual(got, want) {
@@ -144,7 +143,7 @@ func TestSumIntervalsValues(t *testing.T) {
 
 		m := map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6}
 		intervals := []Interval{{1, -1}}
-		want := map[Interval]int{Interval{1, -1}: 20}
+		want := map[Interval]int{Interval{Start: 1, End: -1}: 20}
 		got := SumIntervalsValues(intervals, m)
 
 		if !reflect.DeepEqual(got, want) {
@@ -170,7 +169,7 @@ func TestParseStringToIntervals(t *testing.T) {
 		// strings examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
 		intervals := "(1-3, 4-6, 7-12, >12)"
 		want := []Interval{{1, 3}, {4, 6}, {7, 12}, {12, -1}}
-		got := parseStringToIntervals(intervals)
+		got := ParseStringToIntervals(intervals)
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %v want %v", got, want)
@@ -181,7 +180,7 @@ func TestParseStringToIntervals(t *testing.T) {
 		// strings examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
 		intervals := "(1-3)"
 		want := []Interval{{1, 3}}
-		got := parseStringToIntervals(intervals)
+		got := ParseStringToIntervals(intervals)
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %v want %v", got, want)
@@ -192,7 +191,47 @@ func TestParseStringToIntervals(t *testing.T) {
 		// strings examples: "(1-3, 4-6, 7-12, >12)", "(1-3)", (>1)
 		intervals := "(>3)"
 		want := []Interval{{3, -1}}
-		got := parseStringToIntervals(intervals)
+		got := ParseStringToIntervals(intervals)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+}
+
+func TestAddMaps(t *testing.T) {
+
+	t.Run("combine 2 maps returning the first map combined with the values of the second map", func(t *testing.T) {
+		m1 := map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
+		m2 := map[int]int{1: 1, 2: 2, 3: 3}
+
+		want := map[int]int{1: 2, 2: 4, 3: 6, 4: 4, 5: 5}
+
+		got := addMaps(m1, m2)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("if first map empty, returns the second map", func(t *testing.T) {
+		m1 := map[int]int{}
+		m2 := map[int]int{1: 1, 2: 2, 3: 3}
+
+		want := map[int]int{1: 1, 2: 2, 3: 3}
+
+		got := addMaps(m1, m2)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	})
+	t.Run("if second map empty, returns the first map", func(t *testing.T) {
+		m1 := map[int]int{1: 1, 2: 2, 3: 3}
+		m2 := map[int]int{}
+
+		want := map[int]int{1: 1, 2: 2, 3: 3}
+
+		got := addMaps(m1, m2)
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %v want %v", got, want)
